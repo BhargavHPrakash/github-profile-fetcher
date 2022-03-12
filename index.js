@@ -22,6 +22,14 @@ function getdatagit() {
 		return
 	}
 	fetch('https://api.github.com/users/'+userinput)
+	.then(response => {
+		// console.log(response)
+		if(response.ok) { // this "response.ok" is a obj and property respectively, "ok" is like status code 200(correct user name) else it would be 404. in other apis they may use "success" insted of "ok"
+			return response;
+		} else {
+			throw response;
+		}
+	})
 	.then(response => response.json())
 	.then(data => {
 		// console.log(data.avatar_url, data.id, data.login)  // in console (from the list we can select what ever we want and give "data.___")
@@ -66,6 +74,12 @@ function getdatagit() {
 			document.querySelector("#displayData_field").style.opacity = "1"
 		},200)
 
+		}).catch(err => {
+			if(err.status == 404) {
+				alert("User does not exist!");
+			} else {
+				alert("Unexpected error occured!, Please try again later!")
+			}
 		})
 }
 
@@ -88,9 +102,6 @@ function closegit() {
 		document.querySelector("#name_heading").remove()
 	},2000)
 }
-
-
-
 
 
 
